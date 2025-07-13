@@ -1,5 +1,5 @@
-import { ref, computed } from 'vue'
-import type { Ref } from 'vue'
+import { ref, computed } from 'vue';
+import type { Ref } from 'vue';
 
 // 定義 useCounter 的選項介面
 export interface UseCounterOptions {
@@ -30,45 +30,45 @@ export function useCounter(
     initialValue = 0,
     options: UseCounterOptions = {}
 ): UseCounterReturn {
-    const { min = -Infinity, max = Infinity, step = 1 } = options
+    const { min = -Infinity, max = Infinity, step = 1 } = options;
 
     // 響應式數據：計數器的值
-    const count = ref(initialValue)
+    const count = ref(initialValue);
 
     // 計算屬性：計數器的兩倍值
-    const doubleCount = computed(() => count.value * 2)
+    const doubleCount = computed(() => count.value * 2);
 
     // 計算屬性：是否可以增加
-    const canIncrement = computed(() => count.value + step <= max)
+    const canIncrement = computed(() => count.value + step <= max);
 
     // 計算屬性：是否可以減少
-    const canDecrement = computed(() => count.value - step >= min)
+    const canDecrement = computed(() => count.value - step >= min);
 
     // 增加計數器的函數
     const increment = (): void => {
         if (canIncrement.value) {
-            count.value += step
+            count.value += step;
         }
-    }
+    };
 
     // 減少計數器的函數
     const decrement = (): void => {
         if (canDecrement.value) {
-            count.value -= step
+            count.value -= step;
         }
-    }
+    };
 
     // 設定計數器值的函數
     const set = (value: number): void => {
         if (value >= min && value <= max) {
-            count.value = value
+            count.value = value;
         }
-    }
+    };
 
     // 重設計數器到初始值的函數
     const reset = (): void => {
-        count.value = initialValue
-    }
+        count.value = initialValue;
+    };
 
     return {
         count,
@@ -79,5 +79,5 @@ export function useCounter(
         reset,
         canIncrement,
         canDecrement
-    }
+    };
 }

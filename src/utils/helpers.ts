@@ -1,5 +1,5 @@
-import { unref } from 'vue'
-import type { MaybeRef } from '../types'
+import { unref } from 'vue';
+import type { MaybeRef } from '../types';
 
 /**
  * 安全地取得 ref 或普通值
@@ -7,29 +7,29 @@ import type { MaybeRef } from '../types'
  * @returns 解除 ref 後的值
  */
 export function toValue<T>(val: MaybeRef<T>): T {
-    return unref(val)
+    return unref(val);
 }
 
 /**
  * 檢查是否為瀏覽器環境
  */
-export const isClient = typeof window !== 'undefined'
+export const isClient = typeof window !== 'undefined';
 
 /**
  * 檢查是否支援 LocalStorage
  */
 export const isLocalStorageSupported = (): boolean => {
-    if (!isClient) return false
+    if (!isClient) return false;
 
     try {
-        const testKey = '__localStorage_test__'
-        localStorage.setItem(testKey, 'test')
-        localStorage.removeItem(testKey)
-        return true
+        const testKey = '__localStorage_test__';
+        localStorage.setItem(testKey, 'test');
+        localStorage.removeItem(testKey);
+        return true;
     } catch {
-        return false
+        return false;
     }
-}
+};
 
 /**
  * 安全的 JSON 解析
@@ -38,8 +38,8 @@ export const isLocalStorageSupported = (): boolean => {
  */
 export function safeJsonParse<T>(str: string, fallback: T): T {
     try {
-        return JSON.parse(str)
+        return JSON.parse(str);
     } catch {
-        return fallback
+        return fallback;
     }
 }

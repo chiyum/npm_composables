@@ -20,7 +20,7 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
-    "lint": "eslint . --ext .ts --fix",
+    "lint": "eslint src --ext .ts,.js --config .eslintrc.js",
     "type-check": "vue-tsc --noEmit",
     "prepublishOnly": "yarn build"
   },

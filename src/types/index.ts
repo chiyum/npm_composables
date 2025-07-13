@@ -1,7 +1,7 @@
-import type { Ref, ComputedRef } from 'vue'
+import type { Ref, ComputedRef } from 'vue';
 
 // 重新導出 Vue 的類型，方便使用者使用
-export type { Ref, ComputedRef, UnwrapRef } from 'vue'
+export type { Ref, ComputedRef, UnwrapRef } from 'vue';
 
 // 計數器相關類型
 export interface UseCounterOptions {
