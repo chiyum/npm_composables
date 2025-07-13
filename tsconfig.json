@@ -1,0 +1,55 @@
+{
+  // 繼承 Vue 官方推薦的 TypeScript 設定
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "compilerOptions": {
+    "baseUrl": ".",              // 讓 paths 以專案根目錄為基準
+    "paths": {
+      "@/*": ["src/*"]           // 👈 告訴 TypeScript「@/xxx」=「src/xxx」
+    },
+    // 編譯目標版本，ES2020 提供現代 JavaScript 特性
+    "target": "ES2020",
+    // 使用 class fields 的新語法
+    "useDefineForClassFields": true,
+    // 模組系統使用 ESNext，支援最新的 import/export 語法
+    "module": "ESNext",
+    // 包含的標準庫，DOM 用於瀏覽器環境
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    // 跳過 .d.ts 檔案的類型檢查，提升編譯速度
+    "skipLibCheck": true,
+    // 模組解析策略，bundler 適用於 Vite 等打包工具
+    "moduleResolution": "bundler",
+    // 允許 import .ts 檔案時帶副檔名
+    "allowImportingTsExtensions": true,
+    // 允許 import JSON 檔案
+    "resolveJsonModule": true,
+    // 每個檔案作為獨立模組處理
+    "isolatedModules": true,
+    // 不輸出 JavaScript 檔案，只進行類型檢查
+    "noEmit": true,
+    // 啟用嚴格模式，提供更好的類型檢查
+    "strict": true,
+    // 檢查未使用的本地變數
+    "noUnusedLocals": true,
+    // 檢查未使用的函數參數
+    "noUnusedParameters": true,
+    // 檢查 switch 語句是否有 fallthrough
+    "noFallthroughCasesInSwitch": true,
+    // 生成 .d.ts 類型宣告檔案
+    "declaration": true,
+    // 類型宣告檔案輸出目錄
+    "declarationDir": "dist",
+    // JavaScript 輸出目錄
+    "outDir": "dist"
+  },
+  // 包含的檔案類型
+  "include": [
+    "src/**/*.ts",
+    "vite.config.ts"
+  ],
+  // 排除的目錄
+  "exclude": [
+    "node_modules",
+    "dist",
+    "test"
+  ]
+}

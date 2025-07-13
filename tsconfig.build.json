@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",              // 讓 paths 以專案根目錄為基準
+    "paths": {
+      "@/*": ["src/*"]           // 👈 告訴 TypeScript「@/xxx」=「src/xxx」
+    },
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "outDir": "dist",
+    "declaration": true,
+    "declarationMap": true,
+    "moduleResolution": "node",  // ⭐ 關鍵：vite-plugin-dts 不能用 bundler
+    "module": "ES2020",          // 保險起見，不要是 ESNext，改這個更穩
+    "target": "ES2020"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "test"]
+}
