@@ -12,6 +12,42 @@ jobs:
     runs-on: ubuntu-latest  # 使用 Ubuntu 最新版本作為執行環境
     steps:
       - uses: actions/checkout@v4  # 下載專案程式碼到執行環境
+      # 🔍 檢查環境變數（安全方式）
+      - name: Debug Environment Variables (Safe)
+        run: |
+          echo "=== 檢查基本環境變數 ==="
+          echo "NODE_VERSION: $(node --version)"
+          echo "NPM_VERSION: $(npm --version)"
+          echo "YARN_VERSION: $(yarn --version)"
+          echo "GITHUB_REF: $GITHUB_REF"
+          echo "GITHUB_EVENT_NAME: $GITHUB_EVENT_NAME"
+          echo ""
+          
+          echo "=== 檢查 npm 配置 ==="
+          echo "NPM_CONFIG_REGISTRY: $NPM_CONFIG_REGISTRY"
+          echo "NPM_CONFIG_USERCONFIG: $NPM_CONFIG_USERCONFIG"
+          echo ""
+          
+          echo "=== 檢查 NODE_AUTH_TOKEN 是否存在 ==="
+          if [ -n "$NODE_AUTH_TOKEN" ]; then
+            echo "✅ NODE_AUTH_TOKEN 已設定"
+            echo "TOKEN 長度: ${#NODE_AUTH_TOKEN} 字元"
+            echo "TOKEN 開頭: ${NODE_AUTH_TOKEN:0:8}..."  # 只顯示前8個字元
+          else
+            echo "❌ NODE_AUTH_TOKEN 未設定或為空"
+          fi
+          echo ""
+          
+          echo "=== 檢查 .npmrc 檔案 ==="
+          if [ -f ~/.npmrc ]; then
+            echo "✅ ~/.npmrc 檔案存在"
+            echo "檔案內容（隱藏敏感資訊）:"
+            sed 's/_authToken=.*/_authToken=***HIDDEN***/g' ~/.npmrc
+          else
+            echo "❌ ~/.npmrc 檔案不存在"
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Setup Node.js with Yarn cache
         uses: actions/setup-node@v4  # 設定 Node.js 環境

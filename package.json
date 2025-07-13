@@ -1,6 +1,6 @@
 {
   "name": "chiyum-composable",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "a test npm package for vue3 composables",
   "main": "dist/index.cjs.js",
   "module": "dist/index.es.js",
