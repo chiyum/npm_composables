@@ -1,0 +1,53 @@
+name: CI & Publish (No Tests - Public)
+on:
+  push:
+    branches: [main]   # 當推送到 main 分支時觸發（用於 CI 檢查）
+    tags: ['v*']       # 當推送以 v 開頭的 tag 時觸發（用於發布）
+  pull_request:
+    branches: [main]   # 當建立 PR 到 main 分支時觸發（用於 CI 檢查）
+  workflow_dispatch:   # 允許在 GitHub UI 手動觸發此 workflow
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # 使用 Ubuntu 最新版本作為執行環境
+    steps:
+      - uses: actions/checkout@v4  # 下載專案程式碼到執行環境
+      
+      - name: Setup Node.js with Yarn cache
+        uses: actions/setup-node@v4  # 設定 Node.js 環境
+        with:
+          node-version: 20                              # 使用 Node.js 20 版本
+          cache: 'yarn'                                 # 啟用 Yarn 快取，加速後續安裝
+          registry-url: 'https://registry.npmjs.org'   # 設定 npm registry 地址
+      
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile  # 安裝依賴，--frozen-lockfile 確保使用 lock 檔案中的確切版本
+      
+      - name: Build package
+        run: yarn build  # 執行建置命令，將專案編譯成可發布的格式
+
+  publish:
+    needs: build  # 此 job 必須等 build job 成功完成後才能執行
+    runs-on: ubuntu-latest  # 使用 Ubuntu 最新版本作為執行環境
+    # 只有在推送 tag 或手動觸發時才執行發布
+    if: github.ref_type == 'tag' || github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4  # 下載專案程式碼到執行環境
+      
+      - name: Setup Node.js for publishing
+        uses: actions/setup-node@v4  # 重新設定 Node.js 環境（每個 job 都是獨立的）
+        with:
+          node-version: 20                              # 使用 Node.js 20 版本
+          cache: 'yarn'                                 # 啟用 Yarn 快取
+          registry-url: 'https://registry.npmjs.org'   # 設定 npm registry 地址
+      
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile  # 重新安裝依賴（因為每個 job 環境都是獨立的）
+      
+      - name: Build package
+        run: yarn build  # 重新建置套件
+      
+      - name: Publish to npm (Public Package)
+        run: yarn npm publish --access public  # 發布到 npm，--access public 表示公開套件
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}  # 使用 GitHub Secrets 中的 NPM_TOKEN 進行身份驗證
